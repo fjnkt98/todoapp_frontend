@@ -1,10 +1,19 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import Image from 'next/image';
-import styles from '../styles/Home.module.css';
+import { Header } from '../components/Header';
+import { Content } from '../components/Content';
 
 const Home: NextPage = () => {
-  return <h1 className="text-3xl underline">Hello, World!</h1>;
+  return (
+    <>
+      <Head>
+        <title>All Todo</title>
+      </Head>
+      <Header />
+
+      <Content page="index" />
+    </>
+  );
 };
 
 export default Home;
