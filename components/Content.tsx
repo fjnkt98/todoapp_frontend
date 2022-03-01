@@ -49,8 +49,41 @@ export const todoItemsState = recoil.atom<Todo[]>({
   ],
 });
 
+export const activeTodoItemsState = recoil.selector({
+  key: 'activeTodoItemsState',
+  get: ({ get }) => {
+    const todoItems = get(todoItemsState);
+    return todoItems.filter((item) => item.completed === false);
+  },
+});
+
+export const finishedTodoItemsState = recoil.selector({
+  key: 'finishedTodoItemsState',
+  get: ({ get }) => {
+    const todoItems = get(todoItemsState);
+
+    return todoItems.filter((item) => item.completed === true);
+  },
+});
+
 export const Content: React.VFC<Props> = (props) => {
   const [todoItems, setTodoItems] = recoil.useRecoilState(todoItemsState);
+
+  let todoListView: Todo[] = [];
+  switch (props.page) {
+    case 'index':
+      todoListView = [...todoItems];
+      break;
+    case 'active':
+      todoListView = recoil.useRecoilValue(activeTodoItemsState);
+      break;
+    case 'finished':
+      todoListView = recoil.useRecoilValue(finishedTodoItemsState);
+      break;
+    default:
+      todoListView = [...todoItems];
+      break;
+  }
 
   return (
     <>
@@ -97,7 +130,7 @@ export const Content: React.VFC<Props> = (props) => {
         </div>
 
         <ul className="max-w-lg mx-auto">
-          {todoItems.map(({ id, title, completed }, index) => (
+          {todoListView.map(({ id, title, completed }) => (
             <li
               className="flex flex-wrap items-center py-3 border-b border-gray-200"
               key={id}
@@ -109,6 +142,7 @@ export const Content: React.VFC<Props> = (props) => {
                   className="inline-block mx-4 h-6 w-6 rounded-xl border-gray-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-200 focus:ring-opacity-50 text-teal-500"
                   onChange={() => {
                     setTodoItems((prev: Todo[]) => {
+                      const index = prev.findIndex((item) => item.id === id);
                       return [
                         ...prev.slice(0, index),
                         {
