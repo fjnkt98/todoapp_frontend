@@ -1,4 +1,5 @@
 import React from 'react';
+import recoil from 'recoil';
 import Link from 'next/link';
 import { v4 as uuidv4 } from 'uuid';
 import { Pages } from '../types/pages';
@@ -22,22 +23,9 @@ const pages: Pages = {
   },
 };
 
-const reducer = (prev: Todo[], action: { type: 'update'; index: number }) => {
-  switch (action.type) {
-    case 'update':
-      return [
-        ...prev.slice(0, action.index),
-        { ...prev[action.index], completed: !prev[action.index].completed },
-        ...prev.slice(action.index + 1),
-      ];
-
-    default:
-      return prev;
-  }
-};
-
-export const Content: React.VFC<Props> = (props) => {
-  const [todos, dispatch] = React.useReducer(reducer, [
+export const todoItemsState = recoil.atom<Todo[]>({
+  key: 'todoItemsState',
+  default: [
     {
       id: uuidv4(),
       title: 'Create todo app interface layout using simple HTML',
@@ -58,7 +46,11 @@ export const Content: React.VFC<Props> = (props) => {
       title: 'Develop todo app using React',
       completed: false,
     },
-  ]);
+  ],
+});
+
+export const Content: React.VFC<Props> = (props) => {
+  const [todoItems, setTodoItems] = recoil.useRecoilState(todoItemsState);
 
   return (
     <>
@@ -105,7 +97,7 @@ export const Content: React.VFC<Props> = (props) => {
         </div>
 
         <ul className="max-w-lg mx-auto">
-          {todos.map(({ id, title, completed }, index) => (
+          {todoItems.map(({ id, title, completed }, index) => (
             <li
               className="flex flex-wrap items-center py-3 border-b border-gray-200"
               key={id}
@@ -116,7 +108,16 @@ export const Content: React.VFC<Props> = (props) => {
                   checked={completed}
                   className="inline-block mx-4 h-6 w-6 rounded-xl border-gray-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-200 focus:ring-opacity-50 text-teal-500"
                   onChange={() => {
-                    dispatch({ type: 'update', index });
+                    setTodoItems((prev: Todo[]) => {
+                      return [
+                        ...prev.slice(0, index),
+                        {
+                          ...prev[index],
+                          completed: !prev[index].completed,
+                        },
+                        ...prev.slice(index + 1),
+                      ];
+                    });
                   }}
                 />
                 {title}
