@@ -22,8 +22,22 @@ const pages: Pages = {
   },
 };
 
+const reducer = (prev: Todo[], action: { type: 'update'; index: number }) => {
+  switch (action.type) {
+    case 'update':
+      return [
+        ...prev.slice(0, action.index),
+        { ...prev[action.index], completed: !prev[action.index].completed },
+        ...prev.slice(action.index + 1),
+      ];
+
+    default:
+      return prev;
+  }
+};
+
 export const Content: React.VFC<Props> = (props) => {
-  const [todos, setTodos] = React.useState<Todo[]>([
+  const [todos, dispatch] = React.useReducer(reducer, [
     {
       id: uuidv4(),
       title: 'Create todo app interface layout using simple HTML',
@@ -102,10 +116,7 @@ export const Content: React.VFC<Props> = (props) => {
                   checked={completed}
                   className="inline-block mx-4 cursor-pointer form-check"
                   onChange={() => {
-                    const changedTodos = [...todos];
-                    changedTodos[index].completed =
-                      !changedTodos[index].completed;
-                    setTodos(changedTodos);
+                    dispatch({ type: 'update', index });
                   }}
                 />
                 {title}
