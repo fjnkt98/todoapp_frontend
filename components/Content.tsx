@@ -9,30 +9,6 @@ interface Props {
   page: string;
 }
 
-// Default todo items
-const defaultTodos: Todo[] = [
-  {
-    id: uuidv4(),
-    title: 'Create todo app interface layout using simple HTML',
-    completed: true,
-  },
-  {
-    id: uuidv4(),
-    title: 'Decorate todo app interface using vanilla CSS',
-    completed: true,
-  },
-  {
-    id: uuidv4(),
-    title: 'Decorate todo app interface using Tailwind CSS',
-    completed: true,
-  },
-  {
-    id: uuidv4(),
-    title: 'Develop todo app using React',
-    completed: false,
-  },
-];
-
 // Index of pages
 const pages: Pages = {
   index: {
@@ -47,7 +23,28 @@ const pages: Pages = {
 };
 
 export const Content: React.VFC<Props> = (props) => {
-  const [todos, setTodos] = React.useState<Todo[]>(defaultTodos);
+  const [todos, setTodos] = React.useState<Todo[]>([
+    {
+      id: uuidv4(),
+      title: 'Create todo app interface layout using simple HTML',
+      completed: true,
+    },
+    {
+      id: uuidv4(),
+      title: 'Decorate todo app interface using vanilla CSS',
+      completed: true,
+    },
+    {
+      id: uuidv4(),
+      title: 'Decorate todo app interface using Tailwind CSS',
+      completed: true,
+    },
+    {
+      id: uuidv4(),
+      title: 'Develop todo app using React',
+      completed: false,
+    },
+  ]);
 
   return (
     <>
