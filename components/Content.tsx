@@ -69,6 +69,9 @@ export const finishedTodoItemsState = recoil.selector({
 export const Content: React.VFC<Props> = (props) => {
   const [todoItems, setTodoItems] = recoil.useRecoilState(todoItemsState);
 
+  const [inputText, setInputText] = React.useState<string>('');
+  const inputTextRef = React.useRef<HTMLInputElement>(null!);
+
   let todoListView: Todo[] = [];
   switch (props.page) {
     case 'index':
@@ -94,10 +97,49 @@ export const Content: React.VFC<Props> = (props) => {
               type="text"
               className="inline-block appearance-none rounded-l border border-2 border-gray-500 px-2 py-1 my-1 text-gray-700 focus:border-blue-500 focus:border-2 focus:outline-none"
               placeholder="Enter New Todo"
+              ref={inputTextRef}
+              onKeyPress={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+
+                  setTodoItems((prev: Todo[]) => {
+                    return [
+                      ...prev,
+                      {
+                        id: uuidv4(),
+                        title: inputText,
+                        completed: false,
+                      },
+                    ];
+                  });
+
+                  inputTextRef.current.value = '';
+                }
+              }}
+              onChange={({ target: { value } }) => {
+                setInputText(value);
+              }}
             />
             <button
               type="button"
               className="inline-block px-3 py-1 bg-teal-500 border border-2 border-teal-500 text-white rounded-r "
+              onClick={() => {
+                if (inputText === '') return;
+
+                setTodoItems((prev: Todo[]) => {
+                  return [
+                    ...prev,
+                    {
+                      id: uuidv4(),
+                      title: inputText,
+                      completed: false,
+                    },
+                  ];
+                });
+
+                inputTextRef.current.value = '';
+                setInputText('');
+              }}
             >
               GO
             </button>
