@@ -114,7 +114,7 @@ export const Content: React.VFC<Props> = (props) => {
                 <input
                   type="checkbox"
                   checked={completed}
-                  className="inline-block mx-4 h-6 w-6 rounded-xl border-gray-300 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-200 focus:ring-opacity-50 text-indigo-500"
+                  className="inline-block mx-4 h-6 w-6 rounded-xl border-gray-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-200 focus:ring-opacity-50 text-teal-500"
                   onChange={() => {
                     dispatch({ type: 'update', index });
                   }}
