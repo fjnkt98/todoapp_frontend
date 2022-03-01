@@ -46,13 +46,6 @@ const pages: Pages = {
   },
 };
 
-// Tailwind CSS style classes for active link tab
-const activeTabStyle =
-  'block bg-white border-l border-t border-r rounded-t py-2 px-4 text-blue-700 font-semibold text-center';
-// Tailwind CSS style classes for passive link tab
-const passiveTabStyle =
-  'block bg-white rounded-t py-2 px-4 text-blue-500 hover:text-blue-700 font-semibold text-center';
-
 export const Content: React.VFC<Props> = (props) => {
   const [todos, setTodos] = React.useState<Todo[]>(defaultTodos);
 
