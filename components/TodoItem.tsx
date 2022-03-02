@@ -2,6 +2,7 @@ import React from 'react';
 import recoil from 'recoil';
 import { Todo } from '../types/todo';
 import { todoItemsState } from './Content';
+import { TrashIcon } from '@heroicons/react/outline';
 
 // Type definition for the props which this component takes
 type Props = {
@@ -40,18 +41,21 @@ export const TodoItem: React.VFC<Props> = (props) => {
         type="checkbox"
         id={props.item.id}
         checked={props.item.isFinished}
-        className="inline-block mx-4 h-6 w-6 rounded-xl border-gray-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-200 focus:ring-opacity-50 text-teal-500"
+        className="mx-4 inline-block h-6 w-6 rounded-xl border-gray-300 text-teal-500 focus:border-teal-300 focus:ring-2 focus:ring-teal-200 focus:ring-opacity-50"
         onChange={updateTodoItem}
       />
       <label
         htmlFor={props.item.id}
         className={
-          'inline-block py-3 flex-auto cursor-pointer select-none break-all  ' +
+          'inline-block flex-auto cursor-pointer select-none break-all py-3  ' +
           `${props.item.isFinished ? 'line-through decoration-gray-500' : ''}`
         }
       >
         {props.item.title}
       </label>
+      <button>
+        <TrashIcon className="h-5 w-5 text-gray-400" />
+      </button>
     </li>
   );
 };
