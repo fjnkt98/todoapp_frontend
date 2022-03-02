@@ -32,6 +32,15 @@ export const TodoItem: React.VFC<Props> = (props) => {
     });
   };
 
+  /**
+   * A function that deletes a todo item from list of todo items
+   */
+  const deleteTodoItem = (): void => {
+    setTodoItems((prev: Todo[]) =>
+      prev.filter((item) => item.id !== props.item.id)
+    );
+  };
+
   return (
     <li
       className="flex flex-row items-center border-b border-gray-200"
@@ -53,7 +62,7 @@ export const TodoItem: React.VFC<Props> = (props) => {
       >
         {props.item.title}
       </label>
-      <button>
+      <button onClick={() => deleteTodoItem()}>
         <TrashIcon className="h-5 w-5 text-gray-400" />
       </button>
     </li>
