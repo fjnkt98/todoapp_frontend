@@ -70,6 +70,7 @@ export const Content: React.VFC<Props> = (props) => {
   const [todoItems, setTodoItems] = recoil.useRecoilState(todoItemsState);
 
   const [inputText, setInputText] = React.useState<string>('');
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const inputTextRef = React.useRef<HTMLInputElement>(null!);
 
   let todoListView: Todo[] = [];
