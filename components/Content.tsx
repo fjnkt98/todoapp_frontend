@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { v4 as uuidv4 } from 'uuid';
 import { Pages } from '../types/pages';
 import { Todo } from '../types/todo';
+import { TextInputBox } from '../components/TextInputBox';
 
 // Type definition for this React component
 interface Props {
@@ -69,10 +70,6 @@ export const finishedTodoItemsState = recoil.selector({
 export const Content: React.VFC<Props> = (props) => {
   const [todoItems, setTodoItems] = recoil.useRecoilState(todoItemsState);
 
-  const [inputText, setInputText] = React.useState<string>('');
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const inputTextRef = React.useRef<HTMLInputElement>(null!);
-
   let todoListView: Todo[] = [];
   switch (props.page) {
     case 'index':
@@ -93,58 +90,7 @@ export const Content: React.VFC<Props> = (props) => {
     <>
       <div className="container mx-auto p-4">
         <div className="max-w-xs mx-auto mb-8">
-          <div className="flex flex-row items-center my-2">
-            <input
-              type="text"
-              className="inline-block appearance-none rounded-l border border-2 border-gray-500 px-2 py-1 my-1 text-gray-700 focus:border-blue-500 focus:border-2 focus:outline-none"
-              placeholder="Enter New Todo"
-              ref={inputTextRef}
-              onKeyPress={(e) => {
-                if (e.key === 'Enter') {
-                  e.preventDefault();
-
-                  setTodoItems((prev: Todo[]) => {
-                    return [
-                      ...prev,
-                      {
-                        id: uuidv4(),
-                        title: inputText,
-                        isFinished: false,
-                      },
-                    ];
-                  });
-
-                  inputTextRef.current.value = '';
-                }
-              }}
-              onChange={({ target: { value } }) => {
-                setInputText(value);
-              }}
-            />
-            <button
-              type="button"
-              className="inline-block px-3 py-1 bg-teal-500 border border-2 border-teal-500 text-white rounded-r "
-              onClick={() => {
-                if (inputText === '') return;
-
-                setTodoItems((prev: Todo[]) => {
-                  return [
-                    ...prev,
-                    {
-                      id: uuidv4(),
-                      title: inputText,
-                      isFinished: false,
-                    },
-                  ];
-                });
-
-                inputTextRef.current.value = '';
-                setInputText('');
-              }}
-            >
-              GO
-            </button>
-          </div>
+          <TextInputBox />
         </div>
 
         <div className="max-w-lg mx-auto">
