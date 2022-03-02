@@ -29,22 +29,22 @@ export const todoItemsState = recoil.atom<Todo[]>({
     {
       id: uuidv4(),
       title: 'Create todo app interface layout using simple HTML',
-      completed: true,
+      isFinished: true,
     },
     {
       id: uuidv4(),
       title: 'Decorate todo app interface using vanilla CSS',
-      completed: true,
+      isFinished: true,
     },
     {
       id: uuidv4(),
       title: 'Decorate todo app interface using Tailwind CSS',
-      completed: true,
+      isFinished: true,
     },
     {
       id: uuidv4(),
       title: 'Develop todo app using React',
-      completed: false,
+      isFinished: false,
     },
   ],
 });
@@ -53,7 +53,7 @@ export const activeTodoItemsState = recoil.selector({
   key: 'activeTodoItemsState',
   get: ({ get }) => {
     const todoItems = get(todoItemsState);
-    return todoItems.filter((item) => item.completed === false);
+    return todoItems.filter((item) => item.isFinished === false);
   },
 });
 
@@ -62,7 +62,7 @@ export const finishedTodoItemsState = recoil.selector({
   get: ({ get }) => {
     const todoItems = get(todoItemsState);
 
-    return todoItems.filter((item) => item.completed === true);
+    return todoItems.filter((item) => item.isFinished === true);
   },
 });
 
@@ -109,7 +109,7 @@ export const Content: React.VFC<Props> = (props) => {
                       {
                         id: uuidv4(),
                         title: inputText,
-                        completed: false,
+                        isFinished: false,
                       },
                     ];
                   });
@@ -133,7 +133,7 @@ export const Content: React.VFC<Props> = (props) => {
                     {
                       id: uuidv4(),
                       title: inputText,
-                      completed: false,
+                      isFinished: false,
                     },
                   ];
                 });
@@ -173,7 +173,7 @@ export const Content: React.VFC<Props> = (props) => {
         </div>
 
         <ul className="max-w-lg mx-auto">
-          {todoListView.map(({ id, title, completed }) => (
+          {todoListView.map(({ id, title, isFinished }) => (
             <li
               className="flex flex-wrap items-center py-3 border-b border-gray-200"
               key={id}
@@ -181,12 +181,12 @@ export const Content: React.VFC<Props> = (props) => {
               <label
                 className={
                   'inline-block cursor-pointer select-none ' +
-                  `${completed ? 'line-through decoration-gray-500' : ''}`
+                  `${isFinished ? 'line-through decoration-gray-500' : ''}`
                 }
               >
                 <input
                   type="checkbox"
-                  checked={completed}
+                  checked={isFinished}
                   className="inline-block mx-4 h-6 w-6 rounded-xl border-gray-300 focus:border-teal-300 focus:ring-2 focus:ring-teal-200 focus:ring-opacity-50 text-teal-500"
                   onChange={() => {
                     setTodoItems((prev: Todo[]) => {
@@ -195,7 +195,7 @@ export const Content: React.VFC<Props> = (props) => {
                         ...prev.slice(0, index),
                         {
                           ...prev[index],
-                          completed: !prev[index].completed,
+                          isFinished: !prev[index].isFinished,
                         },
                         ...prev.slice(index + 1),
                       ];
