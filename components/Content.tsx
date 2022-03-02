@@ -1,10 +1,10 @@
 import React from 'react';
 import recoil from 'recoil';
-import Link from 'next/link';
 import { v4 as uuidv4 } from 'uuid';
 import { Pages } from '../types/pages';
 import { Todo } from '../types/todo';
 import { TextInputBox } from '../components/TextInputBox';
+import { ListTab } from '../components/ListTab';
 
 // Type definition for this React component
 interface Props {
@@ -93,30 +93,7 @@ export const Content: React.VFC<Props> = (props) => {
           <TextInputBox />
         </div>
 
-        <div className="max-w-lg mx-auto">
-          <ul className="flex flex-row justify-between border-b">
-            {Object.keys(pages).map((page, index) => {
-              return (
-                <li
-                  className={`${page === 'index' ? '-mb-px flex-1' : 'flex-1'}`}
-                  key={index}
-                >
-                  <Link href={`/${page === 'index' ? '' : page}`}>
-                    <a
-                      className={`${
-                        page === props.page
-                          ? ' block bg-white border-l border-t border-r rounded-t py-2 px-4 text-blue-700 font-semibold text-center'
-                          : 'block bg-white rounded-t py-2 px-4 text-blue-500 hover:text-blue-700 font-semibold text-center'
-                      }`}
-                    >
-                      {pages[page].title}
-                    </a>
-                  </Link>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
+        <ListTab currentPage={props.page} pages={pages} />
 
         <ul className="max-w-lg mx-auto">
           {todoListView.map(({ id, title, isFinished }) => (
